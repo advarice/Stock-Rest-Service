@@ -1,7 +1,12 @@
 package com.example.StockRestService.Dao;
 
+import com.example.StockRestService.entity.StockEntity;
+import com.example.StockRestService.entity.StockStartEndPriceEntity;
+
 import java.util.List;
 
 public interface IStockDao {
-    public List<Object> getStocks();
+    public List<StockEntity> getStocks();
+
+    public List<StockStartEndPriceEntity> getStockStartEndPriceEntity();
 }

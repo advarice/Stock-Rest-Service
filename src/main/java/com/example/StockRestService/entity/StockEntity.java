@@ -1,5 +1,7 @@
 package com.example.StockRestService.entity;
 
+import java.util.Objects;
+
 public class StockEntity {
 
     private String stockSymbol;
@@ -47,5 +49,18 @@ public class StockEntity {
                 ", sector='" + sector + '\'' +
                 ", industry='" + industry + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        StockEntity that = (StockEntity) o;
+        return Objects.equals(stockSymbol, that.stockSymbol);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(stockSymbol);
     }
 }
