@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <!-- <context:component-scan base-package="com.in28minutes.spring.basics"/> -->
+
+    <bean id="startEndPrice" class="java.lang.String">
+        <constructor-arg value="
+    select min_value.STOCK_SYMBOL,
+        min_value.time as start,
+        max_value.time as end,
+        min_value.close as start_price,
+        max_value.close as end_price
+
+    from
+    (
+        select stock_symbol,close,time from stock_weekly_data a
+        where exists
+        (
+            select 1 from
+                (select min(time) as time,STOCK_SYMBOL from stock_weekly_data group by STOCK_SYMBOL) b
+            where a.time=b.time and a.STOCK_SYMBOL=b.stock_symbol
+
+        )
+    ) min_value
+    join
+    (
+        select stock_symbol,close,time from stock_weekly_data a
+        where exists
+        (
+            select 1 from
+                (select max(time) as time,STOCK_SYMBOL from stock_weekly_data group by STOCK_SYMBOL) b
+            where a.time=b.time and a.STOCK_SYMBOL=b.stock_symbol
+
+        )
+    ) max_value
+    on min_value.stock_symbol=max_value.stock_symbol
+    " />
+    </bean>
+
+    <bean id="selectStockInformation" class="java.lang.String">
+        <constructor-arg value="
+    select stock_symbol,name,sector,industry from stock
+    " />
+    </bean>
+
+</beans>
