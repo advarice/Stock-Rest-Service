@@ -29,8 +29,8 @@ public class StockDaoImpl implements IStockDao{
     @PostConstruct
     private void init(){
         stockEntityList=this.jdbcTemplate.query(selectStockInformation,new StockEntityRowMapper());
-        System.out.println(stockEntityList);
-        System.out.println(stockEntityList.size());
+        //System.out.println(stockEntityList);
+        //System.out.println(stockEntityList.size());
     }
 
     @Override
