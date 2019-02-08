@@ -24,6 +24,10 @@ public class StockDaoImpl implements IStockDao{
     @Qualifier("selectStartEndPrice")
     private String selectStartEndPrice;
 
+    @Autowired
+    @Qualifier("selectStartEndAdjustedPrice")
+    private String selectStartEndAdjustedPrice;
+
     private JdbcTemplate jdbcTemplate;
 
     public StockDaoImpl(DriverManagerDataSource datasource){
@@ -55,4 +59,14 @@ public class StockDaoImpl implements IStockDao{
         }
         return result;
     }
+
+    @Override
+    public List<StockStartEndPriceEntity> getStockStartEndPriceAdjustedEntity(){
+        List<StockStartEndPriceEntity> result= this.jdbcTemplate.query(selectStartEndAdjustedPrice,new StockStartEndPriceEntityRowMapper());
+        for(StockStartEndPriceEntity entity: result){
+            entity.setStockEntity(stockEntityHashMap.get(entity.getStockSymbol()));
+        }
+        return result;
+    }
+
 }

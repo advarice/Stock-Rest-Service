@@ -9,4 +9,6 @@ public interface IStockDao {
     public List<StockEntity> getStocks();
 
     public List<StockStartEndPriceEntity> getStockStartEndPriceEntity();
+
+    List<StockStartEndPriceEntity> getStockStartEndPriceAdjustedEntity();
 }

@@ -15,7 +15,7 @@ public class StockStartEndPriceEntityRowMapper implements RowMapper<StockStartEn
         obj.setStartDate(resultSet.getDate("start"));
         obj.setEndDate(resultSet.getDate("end"));
         obj.setStartPrice(resultSet.getDouble("start_price"));
-        obj.setEndPrice(resultSet.getDouble("start_price"));
+        obj.setEndPrice(resultSet.getDouble("end_price"));
         return obj;
     }
 }
