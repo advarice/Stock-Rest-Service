@@ -47,12 +47,12 @@
     select min_value.STOCK_SYMBOL,
         min_value.time as start,
         max_value.time as end,
-        min_value.close as start_price,
-        max_value.close as end_price
+        min_value.adjusted_close as start_price,
+        max_value.adjusted_close as end_price
 
     from
     (
-        select stock_symbol,close,time from stock_weekly_data_adjusted a
+        select stock_symbol,adjusted_close,time from stock_weekly_data_adjusted a
         where exists
         (
             select 1 from
@@ -63,7 +63,7 @@
     ) min_value
     join
     (
-        select stock_symbol,close,time from stock_weekly_data_adjusted a
+        select stock_symbol,adjusted_close,time from stock_weekly_data_adjusted a
         where exists
         (
             select 1 from
@@ -72,7 +72,7 @@
 
         )
     ) max_value
-    on min_value.stock_symbol=max_value.stock_symbol
+    on min_value.stock_symbol=max_value.stock_symbol;
     " />
     </bean>
 
