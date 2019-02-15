@@ -7,7 +7,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class StockRestServiceApplication {
 
-	@Autowired
 
 	public static void main(String[] args) {
 		SpringApplication.run(StockRestServiceApplication.class, args);

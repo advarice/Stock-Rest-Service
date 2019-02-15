@@ -1,6 +1,8 @@
 package com.example.StockRestService.controller;
 
+import com.example.StockRestService.Dao.INewsDao;
 import com.example.StockRestService.Dao.IStockDao;
+import com.example.StockRestService.entity.NewsArticle;
 import com.example.StockRestService.entity.StockEntity;
 import com.example.StockRestService.entity.StockStartEndPriceEntity;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +25,7 @@ public class StockController
     @Autowired
     private IStockDao dao;
 
+
     @RequestMapping("/test")
     public String test(){
         return s;
@@ -42,4 +45,6 @@ public class StockController
     public List<StockStartEndPriceEntity> daoTest2(){
         return dao.getStockStartEndPriceAdjustedEntity();
     }
+
+
 }
