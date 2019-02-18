@@ -4,12 +4,11 @@ import com.example.StockRestService.Dao.INewsDao;
 import com.example.StockRestService.Dao.IStockDao;
 import com.example.StockRestService.entity.NewsArticle;
 import com.example.StockRestService.entity.StockEntity;
+import com.example.StockRestService.entity.StockPerformanceEntity;
 import com.example.StockRestService.entity.StockStartEndPriceEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -45,6 +44,14 @@ public class StockController
     public List<StockStartEndPriceEntity> daoTest2(){
         return dao.getStockStartEndPriceAdjustedEntity();
     }
+
+    @RequestMapping(value="/getStockPerformance/{stock}",method= RequestMethod.GET)
+    public StockPerformanceEntity daoTest2(@PathVariable String stock){
+        System.out.println(dao.getStockPerformance(stock));
+
+        return dao.getStockPerformance(stock);
+    }
+
 
 
 }

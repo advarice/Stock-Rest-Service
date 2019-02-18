@@ -1,8 +1,10 @@
 package com.example.StockRestService.Dao;
 
 import com.example.StockRestService.entity.StockEntity;
+import com.example.StockRestService.entity.StockPerformanceEntity;
 import com.example.StockRestService.entity.StockStartEndPriceEntity;
 import com.example.StockRestService.rowmapper.StockEntityRowMapper;
+import com.example.StockRestService.rowmapper.StockPerformanceRowMapper;
 import com.example.StockRestService.rowmapper.StockStartEndPriceEntityRowMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -27,6 +29,10 @@ public class StockDaoImpl implements IStockDao{
     @Autowired
     @Qualifier("selectStartEndAdjustedPrice")
     private String selectStartEndAdjustedPrice;
+
+    @Autowired
+    @Qualifier("selectStockPerformance")
+    private String selectStockPerformance;
 
     private JdbcTemplate jdbcTemplate;
 
@@ -67,6 +73,12 @@ public class StockDaoImpl implements IStockDao{
             entity.setStockEntity(stockEntityHashMap.get(entity.getStockSymbol()));
         }
         return result;
+    }
+    @Override
+    public StockPerformanceEntity getStockPerformance(String stock){
+        String[] args = {stock,stock,stock,stock,stock};
+        StockPerformanceEntity stockPerformanceEntity = this.jdbcTemplate.queryForObject(selectStockPerformance,args,new StockPerformanceRowMapper());
+        return stockPerformanceEntity;
     }
 
 }

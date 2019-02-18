@@ -52,23 +52,23 @@
 
     from
     (
-        select stock_symbol,adjusted_close,time from stock_weekly_data_adjusted a
+        select stock_symbol,adjusted_close,time from stock_daily_data_adjusted a
         where exists
         (
             select 1 from
-                (select min(time) as time,STOCK_SYMBOL from stock_weekly_data_adjusted group by STOCK_SYMBOL) b
-            where a.time=b.time and a.STOCK_SYMBOL=b.stock_symbol
+                (select min(time) as time,STOCK_SYMBOL from stock_daily_data_adjusted group by STOCK_SYMBOL) b
+            where a.time=b.time and a.STOCK_SYMBOL=b.stock_symbol and financial_data_load_id=(select max(data_load_id) from financial_data_load)
 
         )
     ) min_value
     join
     (
-        select stock_symbol,adjusted_close,time from stock_weekly_data_adjusted a
+        select stock_symbol,adjusted_close,time from stock_daily_data_adjusted a
         where exists
         (
             select 1 from
-                (select max(time) as time,STOCK_SYMBOL from stock_weekly_data_adjusted group by STOCK_SYMBOL) b
-            where a.time=b.time and a.STOCK_SYMBOL=b.stock_symbol
+                (select max(time) as time,STOCK_SYMBOL from stock_daily_data_adjusted group by STOCK_SYMBOL) b
+            where a.time=b.time and a.STOCK_SYMBOL=b.stock_symbol and financial_data_load_id=(select max(data_load_id) from financial_data_load)
 
         )
     ) max_value
@@ -79,6 +79,106 @@
     <bean id="selectStockInformation" class="java.lang.String">
         <constructor-arg value="
     select stock_symbol,name,sector,industry from stock
+    " />
+    </bean>
+
+    <bean id="selectStockPerformance" class="java.lang.String">
+        <constructor-arg value="
+            WITH
+            L7D as
+            (
+                select count(*),
+                stock_symbol,
+                avg(adjusted_close) as DAY_AVG_CLOSE,
+                avg(volume) DAY_AVG_VOLUME,
+                max(time),
+                min(time) from
+                (   select* from stock_daily_data_adjusted
+                    where STOCK_SYMBOL=?
+                    and financial_data_load_id = (select max(data_load_id) from financial_data_load)
+                    order by time desc
+                    limit 7
+                ) a
+            ) ,
+            L30D as
+            (
+                select count(*),
+                stock_symbol,
+                avg(adjusted_close) as DAY_AVG_CLOSE,
+                avg(volume) DAY_AVG_VOLUME,
+                max(time),
+                min(time) from
+                (   select* from stock_daily_data_adjusted
+                    where STOCK_SYMBOL=?
+                    and financial_data_load_id = (select max(data_load_id) from financial_data_load)
+                    order by time desc
+                    limit 30
+                ) a
+            ) ,
+            L60D as
+            (
+                select count(*),
+                stock_symbol,
+                avg(adjusted_close) as DAY_AVG_CLOSE,
+                avg(volume) as DAY_AVG_VOLUME,
+                max(time),
+                min(time) from
+                (   select* from stock_daily_data_adjusted
+                    where STOCK_SYMBOL=?
+                    and financial_data_load_id = (select max(data_load_id) from financial_data_load)
+                    order by time desc
+                    limit 60
+                ) a
+            ) ,
+            L90D as
+            (
+                select count(*),
+                stock_symbol,
+                avg(adjusted_close) as DAY_AVG_CLOSE,
+                avg(volume) as DAY_AVG_VOLUME,
+                max(time),
+                min(time) from
+                (   select* from stock_daily_data_adjusted
+                    where STOCK_SYMBOL=?
+                    and financial_data_load_id = (select max(data_load_id) from financial_data_load)
+                    order by time desc
+                    limit 90
+                ) a
+            ),
+            cur as
+            (
+                select stock_symbol,volume,adjusted_close from
+                stock_daily_data_adjusted
+                where stock_symbol=?
+                and time=(select max(time) from stock_daily_data_adjusted)
+            )
+            select
+                d.adjusted_close as currentClose,
+                d.volume as currentVolume,
+                a.stock_symbol,
+                f.name,
+                f.sector,
+                f.industry,
+                e.DAY_AVG_CLOSE as day7avgclose,
+                e.DAY_AVG_VOLUME as day7avgvolume,
+                a.DAY_AVG_CLOSE as day30avgclose,
+                a.DAY_AVG_VOLUME as day30avgvolume,
+                b.DAY_AVG_CLOSE as day60avgclose,
+                b.DAY_AVG_VOLUME as day60avgvolume,
+                c.DAY_AVG_CLOSE as day90avgclose,
+                c.DAY_AVG_VOLUME as day90avgvolume
+                from L30D a
+                inner join L60D b
+                on a.stock_symbol=b.stock_symbol
+                inner join L90D c
+                on a.stock_symbol=c.stock_symbol
+                inner join cur d
+                on a.stock_symbol=d.stock_symbol
+                inner join L7D e
+                on a.stock_symbol=e.stock_symbol
+                inner join stock f
+                on a.stock_symbol=f.stock_symbol
+
     " />
     </bean>
 

@@ -9,6 +9,7 @@ public class StockEntity {
     private String sector;
     private String industry;
 
+
     public String getStockSymbol() {
         return stockSymbol;
     }
