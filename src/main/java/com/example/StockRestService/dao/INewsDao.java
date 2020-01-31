@@ -1,4 +1,4 @@
-package com.example.StockRestService.Dao;
+package com.example.StockRestService.dao;
 
 import com.example.StockRestService.entity.NewsArticle;
 

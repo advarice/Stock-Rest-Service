@@ -182,4 +182,52 @@
     " />
     </bean>
 
+
+    <bean id="insertStockSummary" class="java.lang.String">
+        <constructor-arg value="
+            INSERT IGNORE INTO fde.stock_summary
+            (stock_symbol,
+            market_cap,
+            pe_ratio,
+            frd_1yr_pe_ratio,
+            eps,
+            annulize_dividend,
+            yield,
+            asset_class,
+            ex_divdend_date,
+            next_divdend_data,
+            insert_date)
+            VALUES
+            (?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?)
+
+    " />
+    </bean>
+
+    <bean id="insertStock" class="java.lang.String">
+        <constructor-arg value="
+            INSERT IGNORE INTO `fde`.`stock`
+            (`stock_symbol`,
+            `name`,
+            `sector`,
+            `industry`)
+            VALUES
+            (?,
+            ?,
+            ?,
+            ?
+            )
+
+    " />
+    </bean>
+
 </beans>

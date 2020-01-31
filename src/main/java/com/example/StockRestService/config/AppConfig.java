@@ -1,22 +1,29 @@
 package com.example.StockRestService.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.ImportResource;
+import org.springframework.core.convert.ConversionService;
+import org.springframework.core.convert.support.DefaultConversionService;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.web.client.RestTemplate;
 
 @Configuration
-@ImportResource("classpath:sql/StockSqlBean.xml")
+@ImportResource("classpath:sql/*")
 public class AppConfig {
 
+    @Autowired
+    private AppProperties appProperties;
+
     @Bean
-    public DriverManagerDataSource dataSource(){
+    public DriverManagerDataSource fdeDataSource(){
+        System.out.println(appProperties.toString());
         DriverManagerDataSource ds=new DriverManagerDataSource();
-        ds.setDriverClassName("com.mysql.jdbc.Driver");
-        ds.setUrl("jdbc:mysql://localhost:3306/stock_analysis");
-        ds.setUsername("root");
-        ds.setPassword("");
+        ds.setDriverClassName(appProperties.getSqlDriverClass());
+        ds.setUrl(appProperties.getSqlUrl());
+        ds.setUsername(appProperties.getSqlUser());
+        ds.setPassword(appProperties.getSqlPassword());
         return ds;
     }
 
@@ -24,4 +31,9 @@ public class AppConfig {
     public RestTemplate restTemplate(){
         return new RestTemplate();
     }
+
+/*    @Bean public ConversionService conversionService() {
+        return new DefaultConversionService();
+    }*/
+
 }

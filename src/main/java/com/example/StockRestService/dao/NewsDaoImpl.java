@@ -1,19 +1,14 @@
-package com.example.StockRestService.Dao;
+package com.example.StockRestService.dao;
 
 import com.example.StockRestService.entity.NewsArticle;
 import com.example.StockRestService.entity.NewsArticles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.client.RestTemplate;
 
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.util.List;
 
 @Repository
